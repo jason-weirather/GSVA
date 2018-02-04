@@ -5,8 +5,12 @@ import argparse, sys, os
 import pandas as pd 
 from tempfile import mkdtemp, gettempdir
 from subprocess import Popen, PIPE
+from shutil import which
 
-def gsva(df,gmt_df=None,gmt_file=None,
+if which('Rscript') is None:
+    raise ValueError("ERROR: Rscript command must be installed.  Install R")
+
+def gsva(expression_df,geneset_df=None,gmt_file=None,
          method='gsva',
          kcdf='Gaussian',
          abs_ranking=False,
@@ -20,6 +24,43 @@ def gsva(df,gmt_df=None,gmt_file=None,
          verbose=False,
          tempdir= None
          ):
+    """GSVA function for use with pandas DataFrame objects
+
+    :param expression_df: Expression data indexed on gene names column labels as sample ids
+    :type expression_df: pandas.DataFrame
+    :param geneset_df: Genesets and their members in a dataframe
+    :type geneset_df: pandas.DataFrame
+    :param gmt_file: Optionally load genesets from a gmt_file
+    :type gmt_file: string  
+    :param method: Method to employ in the estimation of gene-set enrichment scores per sample. By default this is set to gsva (Hänzelmann et al, 2013) and other options 6 gsva are ssgsea (Barbie et al, 2009), zscore (Lee et al, 2008) or plage (Tomfohr et al, 2005). The latter two standardize first expression profiles into z-scores over the samples and, in the case of zscore, it combines them together as their sum divided by the square-root of the size of the gene set, while in the case of plage they are used to calculate the singular value decomposition (SVD) over the genes in the gene set and use the coefficients of the first right-singular vector as pathway activity profile.
+    :type method: string Default: 'gsva'   
+    :param kcdf: Character string denoting the kernel to use during the non-parametric estimation of the cumulative distribution function of expression levels across samples when method="gsva". By default, kcdf="Gaussian" which is suitable when input expression values are continuous, such as microarray fluorescent units in logarithmic scale, RNA-seq log-CPMs, log-RPKMs or log-TPMs. When input expression values are integer counts, such as those derived from RNA-seq experiments, then this argument should be set to kcdf="Poisson". This argument supersedes arguments rnaseq and kernel, which are deprecated and will be removed in the next release.
+    :type kcdf: string Default: 'Gaussian'
+    :param abs_ranking: Flag used only when mx_diff=TRUE. When abs_ranking=FALSE [default] a modified Kuiper statistic is used to calculate enrichment scores, taking the magnitude difference between the largest positive and negative random walk deviations. When abs.ranking=TRUE the original Kuiper statistic that sums the largest positive and negative random walk deviations, is used. In this latter case, gene sets with genes enriched on either extreme (high or low) will be regarded as ’highly’ activated.
+    :type abs_ranking: bool Default: False
+    :param min_sz: Minimum size of the resulting gene sets.
+    :type min_sz: int Default: 1
+    :param max_sz: Maximum size of the resulting gene sets. Leave unset for no limit.
+    :type max_sz: int Default: Inf
+    :param parallel_sz: Number of processors to use when doing the calculations in parallel. This requires to previously load either the parallel or the snow library. If parallel is loaded and this argument is left with its default value (parallel_sz=0) then it will use all available core processors unless we set this argument with a smaller number. If snow is loaded then we must set this argument to a positive integer number that specifies the number of processors to employ in the parallel calculation.
+    :type parallel_sz: int Default: 0
+    :param parallel_type: Type of cluster architecture when using snow.
+    :type parallel_type: string Default: "SOCK"   
+    :param mx_diff: Offers two approaches to calculate the enrichment statistic (ES) from the KS random walk statistic. mx_diff=FALSE: ES is calculated as the maximum distance of the random walk from 0. mx_diff=TRUE (default): ES is calculated as the magnitude difference between the largest positive and negative random walk deviations.
+    :type mx_diff: bool Default: True    
+    :param tau: Exponent defining the weight of the tail in the random walk performed by both the gsva (Hänzelmann et al., 2013) and the ssgsea (Barbie et al., 2009) methods. By default, this tau=1 when method="gsva" and tau=0.25 when method="ssgsea" just as specified by Barbie et al. (2009) where this parameter is called alpha. Leave unset for defaults.
+    :type tau: float    
+    :param ssgsea_norm: Logical, set to TRUE (default) with method="ssgsea" runs the SSGSEA method from Barbie et al. (2009) normalizing the scores by the absolute difference between the minimum and the maximum, as described in their paper. When ssgsea_norm=FALSE this last normalization step is skipped.
+    :type ssgsea_norm: bool Default: True    
+    :param verbose: Gives information about each calculation step.
+    :type verbose: bool Default: False
+    :param tempdir: Location to write temporary files
+    :type tempdir: string Default: System Default
+    :returns: pandas.DataFrame
+    """
+    df = expression_df
+    gmt_df = geneset_df
+
     if not tempdir:
         tempdir =  smkdtemp(prefix="weirathe.",dir=gettempdir().rstrip('/'))
     if verbose:
@@ -59,8 +100,8 @@ def gsva(df,gmt_df=None,gmt_file=None,
     output.index.name = 'name'
     return output
 
-def cli():
-    args = do_inputs()
+def __cli():
+    args = __do_inputs()
     # Now read in the input files for purposes of standardizing inputs
     df = None
     if args.tsv_in:
@@ -91,6 +132,8 @@ def cli():
                 sys.stdout.write(line)
 
 def gmt_to_pd(fname):
+    """ A function to convert gmt files to a pandas dataframe 
+    """
     res = []
     with open(fname) as inf:
         for line in inf:
@@ -102,23 +145,8 @@ def gmt_to_pd(fname):
                 res.append(pd.Series({'name':name,'description':description,'member':member}))
     return pd.DataFrame(res)
 
-def main(args):
-  inf = sys.stdin
-  of = sys.stdout
-  if args.input != '-':
-    if args.input[-3:] == '.gz': inf = gzip.open(args.input)
-    else: inf = open(args.input)
-  if args.output:
-    of = open(args.output,'w')
-  stream = FASTAStream(inf)
-  for fa in stream:
-    if re.match('[\t]',fa.header):
-      sys.stderr.write("ERROR: tab in header cannot convert to tsv")
-      sys.stderr.write("\n")
-    of.write(fa.header+"\t"+fa.sequence.replace("\n",'')+"\n")
-  of.close()
 
-def do_inputs():
+def __do_inputs():
     # Setup command line inputs
     parser=argparse.ArgumentParser(description="Execute R bioconductors GSVA",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -247,14 +275,6 @@ def setup_tempdir(args):
     sys.exit()
   return
 
-def external_cmd(cmd):
-  cache_argv = sys.argv
-  sys.argv = cmd
-  args = do_inputs()
-  main(args)
-  sys.argv = cache_argv
-
 if __name__=="__main__":
-  args = do_inputs()
-  main(args)
+  _cli()
 

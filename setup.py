@@ -13,9 +13,9 @@ with open(path.join(this_folder,'README.md'),encoding='utf-8') as inf:
 setup(
   name='GSVA',
   version='1.0.0',
-  description='Python tools for working with biological sequence data',
+  description='Python CLI and module for running the GSVA R bioconductor package with Python Pandas inputs and outputs.',
   long_description=long_description,
-  url='https://github.com/jason-weirather/py-seq-tools',
+  url='https://github.com/jason-weirather/GSVA',
   author='Jason L Weirather',
   author_email='jason.weirather@gmail.com',
   license='Apache License, Version 2.0',
@@ -25,11 +25,11 @@ setup(
     'Topic :: Scientific/Engineering :: Bio-Informatics',
     'License :: OSI Approved :: Apache Software License'
   ],
-  keywords='bioinformatics, R, enrichment, GSVA, ssGSEA',
+  keywords='bioinformatics, R, enrichment, GSVA, ssGSEA, GSEA, bioconductor',
   packages=['GSVA'
            ],
   entry_points = {
-    'console_scripts':['GSVA=GSVA:cli']
+    'console_scripts':['GSVA=GSVA:__cli']
   }
 )
 
