@@ -7,7 +7,7 @@ source:
   git_url: https://github.com/jason-weirather/GSVA.git
 
 build:
-  number: 3
+  number: 4
 
 requirements:
   build:
@@ -15,9 +15,8 @@ requirements:
     - setuptools
   run:
     - python 3.6.*
-    - r-essentials
-    - bioconda-gseabase
-    - bioconda-gsva
+    - bioconductor-gseabase 1.40.0
+    - bioconductor-gsva 1.26.0
     - setuptools
 
 about:
