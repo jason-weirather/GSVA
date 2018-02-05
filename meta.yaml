@@ -12,11 +12,12 @@ build:
 requirements:
   build:
     - python 3.6.*
-    - r-essentials
     - setuptools
   run:
     - python 3.6.*
     - r-essentials
+    - bioconda-gseabase
+    - bioconda-gsva
     - setuptools
 
 about:
