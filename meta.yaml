@@ -1,0 +1,25 @@
+package:
+  name: GSVA-python-CLI
+  version: "1.0.0"
+
+source:
+  git_rev: master
+  git_url: https://github.com/jason-weirather/GSVA.git
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - python 3.6.*
+    - setuptools
+  run:
+    - python 3.6.*
+    - r-essentials
+    - bioconductor-gseabase
+    - bioconductor-gsva
+
+about:
+  home: https://github.com/jason-weirather/GSVA
+  license: Apache 2.0
+  license_file: LICENSE
