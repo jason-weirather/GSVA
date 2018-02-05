@@ -4,9 +4,13 @@ Python hooks for R's GSVA bioconductor package to make working in Pandas easier,
 
 Autodoc manual is here:  https://jason-weirather.github.io/GSVA/
 
-#### This is not the offical site for the GSVA bioconductor package
+##### Disclaimer
 
-##### Find the official R package here
+I am not the creator or author of GSVA.  This is a CLI and python hook created to make their package easy to use from the command line and python.
+
+##### This is not the offical site for the GSVA bioconductor package
+
+Find the official R package here
 
 https://doi.org/doi:10.18129/B9.bioc.GSVA
 
