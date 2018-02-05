@@ -20,13 +20,20 @@ Hänzelmann S, Castelo R and Guinney J (2013). “GSVA: gene set variation analy
 
 ## Get GSVA Python CLI
 
-#### Install on your system
+#### Method 1: Install on your system
 
 1. Install R https://www.r-project.org/ 
-2. Install the R bioconductor packaqge GSEABase and GSVA `$ Rscript -e 'source("http://bioconductor.org/biocLite.R");library(BiocInstaller);biocLite(pkgs=c("GSEABase","GSVA"),dep=TRUE)'`
+2. Install the R bioconductor packaqge GSEABase and GSVA 
+
+```
+$ Rscript -e 'source("http://bioconductor.org/biocLite.R");\
+              library(BiocInstaller);\
+              biocLite(pkgs=c("GSEABase","GSVA"),dep=TRUE)'
+```
+
 3. Install this package `$ pip install GSVA`
 
-#### Run GSVA via the docker
+#### Method 2: Run GSVA via the docker
 
 `$ docker pull vacation/gsva:latest`
 
