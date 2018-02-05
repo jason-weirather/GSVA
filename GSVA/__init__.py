@@ -66,7 +66,7 @@ def gsva(expression_df,geneset_df=None,
     gmt_df = geneset_df
 
     if not tempdir:
-        tempdir =  smkdtemp(prefix="weirathe.",dir=gettempdir().rstrip('/'))
+        tempdir =  mkdtemp(prefix="weirathe.",dir=gettempdir().rstrip('/'))
     if verbose:
         sys.stderr.write("Caching to "+tempdir+"\n")
     # Remove genes from the genesets that do not occur in the dataset
