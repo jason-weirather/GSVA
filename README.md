@@ -1,6 +1,6 @@
 # GSVA Python CLI
 
-Python hooks for R's GSVA bioconductor package to make working in Pandas easier, and a handy CLI for execution of GSVA.
+Python hooks for R's GSVA bioconductor package to make working in Pandas easier, and a handy CLI (command line interface) for execution of GSVA.
 
 Autodoc manual is here:  https://jason-weirather.github.io/GSVA/
 
