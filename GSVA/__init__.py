@@ -26,9 +26,9 @@ def gsva(expression_df,geneset_df=None,gmt_file=None,
          ):
     """GSVA function for use with pandas DataFrame objects
 
-    :param expression_df: Expression data indexed on gene names column labels as sample ids
+    :param expression_df: REQUIRED: Expression data indexed on gene names column labels as sample ids
     :type expression_df: pandas.DataFrame
-    :param geneset_df: Genesets and their members in a dataframe
+    :param geneset_df: REQUIRED: Genesets and their members in a dataframe
     :type geneset_df: pandas.DataFrame
     :param gmt_file: Optionally load genesets from a gmt_file
     :type gmt_file: string  
