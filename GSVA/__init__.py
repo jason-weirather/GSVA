@@ -117,7 +117,7 @@ def __cli():
     else:
         df = pd.read_csv(args.input,index_col=0)
     gmt = gmt_to_dataframe(args.gmt)
-    result = gsva(df,gmt_df=gmt,
+    result = gsva(df,geneset_df=gmt,
                   method=args.method,
                   kcdf=args.kcdf,
                   abs_ranking=args.abs_ranking,
@@ -131,10 +131,12 @@ def __cli():
                   verbose=args.verbose,
                   tempdir=args.tempdir
                  )
+    sep = ','
+    if args.tsv_out: sep = "\t"
     if args.output:
-        result.to_csv(args.output,args)
+        result.to_csv(args.output,sep=sep)
     else:
-        result.to_csv(os.path.join(args.tempdir,'final.csv'))
+        result.to_csv(os.path.join(args.tempdir,'final.csv'),sep=sep)
         with open(os.path.join(args.tempdir,'final.csv')) as inf:
             for line in inf:
                 sys.stdout.write(line)
@@ -169,7 +171,7 @@ def __do_inputs():
     group0.add_argument('--gmt',required=True,help='GMT file with pathways')
 
     group2 = parser.add_argument_group('Output options')
-    group2.add_argument('--csv_out',action='store_true',help="Exepct CSV output format with comma delimmiter and double quoted text")
+    group2.add_argument('--tsv_out',action='store_true',help="Override the default CSV and output TSV")
     group2.add_argument('--output','-o',help="Specifiy path to write transformed data")
     group2.add_argument('--meta_output',help="Speciify path to output additional run information")
 
