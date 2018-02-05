@@ -15,10 +15,6 @@ import argparse, sys, os
 import pandas as pd 
 from tempfile import mkdtemp, gettempdir
 from subprocess import Popen, PIPE
-from shutil import which
-
-if which('Rscript') is None:
-    raise ValueError("ERROR: Rscript command must be installed.  Install R")
 
 def gsva(expression_df,geneset_df=None,
          method='gsva',
@@ -178,7 +174,7 @@ def __do_inputs():
     group1 = parser.add_argument_group('command options')
     method_str = '''
 Method to employ in the estimation of gene-set enrichment scores per sample.
-By default this is set to gsva (Hänzelmann et al, 2013) and other options
+By default this is set to gsva (Hanzelmann et al, 2013) and other options
 6 gsva
 are ssgsea (Barbie et al, 2009), zscore (Lee et al, 2008) or plage (Tomfohr
 et al, 2005). The latter two standardize first expression profiles into z-scores
@@ -243,7 +239,7 @@ deviations.
     group1.add_argument('--mx_diff',type=bool,default=True,help=mx_diff_str)
     tau_str = '''
 Exponent defining the weight of the tail in the random walk performed by
-both the gsva (Hänzelmann et al., 2013) and the ssgsea (Barbie et al., 2009)
+both the gsva (Hanzelmann et al., 2013) and the ssgsea (Barbie et al., 2009)
 methods. By default, this tau=1 when method="gsva" and tau=0.25 when
 method="ssgsea" just as specified by Barbie et al. (2009) where this parameter
 is called alpha.
