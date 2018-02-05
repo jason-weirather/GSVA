@@ -45,14 +45,17 @@ First install GSVA Python CLI on your system as described above. For details on 
 
 Consider this Jupyter notebook workflow
 
-```
+```python
 import pandas as pd
 from GSVA import gsva, gmt_to_dataframe
+# Some extras to look at the high dimensional data
+from plotnine import *
+from sklearn.manifold import TSNE
 ```
 
 Read in a Broad reference pathway gmt file.  Notice the "member" and "name" fields.  If you make your own dataframe to use, these are the required column names.
 
-```
+```python
 genesets_df = gmt_to_dataframe('c2.cp.v6.0.symbols.gmt')
 genesets_df.head()
 ```
@@ -67,7 +70,7 @@ genesets_df.head()
 
 This example has 200 samples
 
-```
+```python
 expression_df = pd.read_csv('example_expression.csv',index_col=0)
 expression_df.iloc[0:5,0:5]
 ```
@@ -80,9 +83,20 @@ expression_df.iloc[0:5,0:5]
 | MT-ATP8   | 13.805 | 11.789 | 13.414 | 11.883 | 11.141 |
 | MT-ATP6   | 13.500 | 11.703 | 13.227 | 11.219 | 10.836 |
 
+```python
+XV = TSNE(n_components=2).\
+    fit_transform(expression_df.T)
+df = pd.DataFrame(XV).rename(columns={0:'x',1:'y'})
+(ggplot(df,aes(x='x',y='y'))
+ + geom_point(alpha=0.2)
+)
+```
+
+![Gene Expression](https://i.imgur.com/Qbwds5H.png)
+
 The default command runs without verbose message output. but take notice, that genes that are not part of the `expression_df` are dropped from the analysis, and depending on your choice of GSVA method, genes for which there is not enough expression (i.e. all zero expression) will be dropped.
 
-```
+```python
 pathways_df = gsva(expression_df,genesets_df)
 pathways_df.iloc[0:5,0:5]
 ```
@@ -94,3 +108,14 @@ pathways_df.iloc[0:5,0:5]
 | BIOCARTA_ACH_PATHWAY    | 0.514193  | 0.149291  | 0.226279  | 0.289960 | 0.016071  |
 | BIOCARTA_ACTINY_PATHWAY | -0.014494 | 0.407871  | -0.062163 | 0.055607 | 0.424726  |
 | BIOCARTA_AGPCR_PATHWAY  | 0.622482  | -0.012845 | 0.317349  | 0.286368 | 0.022540  |
+
+```python
+YV = TSNE(n_components=2).\
+    fit_transform(pathways_df.T)
+pf = pd.DataFrame(YV).rename(columns={0:'x',1:'y'})
+(ggplot(pf,aes(x='x',y='y'))
+ + geom_point(alpha=0.2)
+)
+```
+
+![Pathway Enrichment](https://i.imgur.com/2pxjoRr.png)
