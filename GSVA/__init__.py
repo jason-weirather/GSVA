@@ -8,7 +8,7 @@ https://doi.org/doi:10.18129/B9.bioc.GSVA
 
 And if you find this useful, cite the authors publication:
 
-Hänzelmann S, Castelo R and Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, pp. 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7.
+Hänzelmann S, Castelo R and Guinney J (2013). "GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, pp. 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7.
 
 """
 import argparse, sys, os
@@ -40,7 +40,7 @@ def gsva(expression_df,geneset_df=None,
     :type method: string Default: 'gsva'   
     :param kcdf: Character string denoting the kernel to use during the non-parametric estimation of the cumulative distribution function of expression levels across samples when method="gsva". By default, kcdf="Gaussian" which is suitable when input expression values are continuous, such as microarray fluorescent units in logarithmic scale, RNA-seq log-CPMs, log-RPKMs or log-TPMs. When input expression values are integer counts, such as those derived from RNA-seq experiments, then this argument should be set to kcdf="Poisson". This argument supersedes arguments rnaseq and kernel, which are deprecated and will be removed in the next release.
     :type kcdf: string Default: 'Gaussian'
-    :param abs_ranking: Flag used only when mx_diff=TRUE. When abs_ranking=FALSE [default] a modified Kuiper statistic is used to calculate enrichment scores, taking the magnitude difference between the largest positive and negative random walk deviations. When abs.ranking=TRUE the original Kuiper statistic that sums the largest positive and negative random walk deviations, is used. In this latter case, gene sets with genes enriched on either extreme (high or low) will be regarded as ’highly’ activated.
+    :param abs_ranking: Flag used only when mx_diff=TRUE. When abs_ranking=FALSE [default] a modified Kuiper statistic is used to calculate enrichment scores, taking the magnitude difference between the largest positive and negative random walk deviations. When abs.ranking=TRUE the original Kuiper statistic that sums the largest positive and negative random walk deviations, is used. In this latter case, gene sets with genes enriched on either extreme (high or low) will be regarded as 'highly’ activated.
     :type abs_ranking: bool Default: False
     :param min_sz: Minimum size of the resulting gene sets.
     :type min_sz: int Default: 1
@@ -204,7 +204,7 @@ difference between the largest positive and negative random walk deviations.
 When abs.ranking=TRUE the original Kuiper statistic that sums the
 largest positive and negative random walk deviations, is used. In this latter case,
 gene sets with genes enriched on either extreme (high or low) will be regarded
-as ’highly’ activated.
+as'highly' activated.
     '''
     group1.add_argument('--abs_ranking',action='store_true',help=abs_ranking_str)
     min_sz_str = '''
