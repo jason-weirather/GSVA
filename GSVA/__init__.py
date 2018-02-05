@@ -1,4 +1,14 @@
-"""Execute bioconductors GSVA transformation of gene expression into pathway enrichment
+"""Execute bioconductors GSVA transformation of gene expression into pathway enrichment.
+
+This python package gives both a CLI interface and a python module to work with GSVA in Python Pandas DataFrames.
+
+Find the official R package here:
+
+https://doi.org/doi:10.18129/B9.bioc.GSVA
+
+And if you find this useful, cite the authors publication:
+
+Hänzelmann S, Castelo R and Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, pp. 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7.
 
 """
 import argparse, sys, os
@@ -10,7 +20,7 @@ from shutil import which
 if which('Rscript') is None:
     raise ValueError("ERROR: Rscript command must be installed.  Install R")
 
-def gsva(expression_df,geneset_df=None,gmt_file=None,
+def gsva(expression_df,geneset_df=None,
          method='gsva',
          kcdf='Gaussian',
          abs_ranking=False,
@@ -30,8 +40,6 @@ def gsva(expression_df,geneset_df=None,gmt_file=None,
     :type expression_df: pandas.DataFrame
     :param geneset_df: REQUIRED: Genesets and their members in a dataframe
     :type geneset_df: pandas.DataFrame
-    :param gmt_file: Optionally load genesets from a gmt_file
-    :type gmt_file: string  
     :param method: Method to employ in the estimation of gene-set enrichment scores per sample. By default this is set to gsva (Hänzelmann et al, 2013) and other options 6 gsva are ssgsea (Barbie et al, 2009), zscore (Lee et al, 2008) or plage (Tomfohr et al, 2005). The latter two standardize first expression profiles into z-scores over the samples and, in the case of zscore, it combines them together as their sum divided by the square-root of the size of the gene set, while in the case of plage they are used to calculate the singular value decomposition (SVD) over the genes in the gene set and use the coefficients of the first right-singular vector as pathway activity profile.
     :type method: string Default: 'gsva'   
     :param kcdf: Character string denoting the kernel to use during the non-parametric estimation of the cumulative distribution function of expression levels across samples when method="gsva". By default, kcdf="Gaussian" which is suitable when input expression values are continuous, such as microarray fluorescent units in logarithmic scale, RNA-seq log-CPMs, log-RPKMs or log-TPMs. When input expression values are integer counts, such as those derived from RNA-seq experiments, then this argument should be set to kcdf="Poisson". This argument supersedes arguments rnaseq and kernel, which are deprecated and will be removed in the next release.
@@ -108,7 +116,7 @@ def __cli():
         df = pd.read_csv(args.input,sep="\t",index_col=0)
     else:
         df = pd.read_csv(args.input,index_col=0)
-    gmt = gmt_to_pd(args.gmt)
+    gmt = gmt_to_dataframe(args.gmt)
     result = gsva(df,gmt_df=gmt,
                   method=args.method,
                   kcdf=args.kcdf,
@@ -131,8 +139,13 @@ def __cli():
             for line in inf:
                 sys.stdout.write(line)
 
-def gmt_to_pd(fname):
+def gmt_to_dataframe(fname):
     """ A function to convert gmt files to a pandas dataframe 
+
+    :param fname: path to gmt file
+    :type fname: string 
+    :returns: pandas.DataFrame
+
     """
     res = []
     with open(fname) as inf:

@@ -13,3 +13,4 @@ GSVA Python CLI
 
 .. autofunction:: gsva
 
+.. autofunction:: gmt_to_dataframe

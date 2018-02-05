@@ -42,10 +42,15 @@
 <h1>GSVA Python CLI<a class="headerlink" href="#gsva-python-cli" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-GSVA"></span><p>Execute bioconductors GSVA transformation of gene expression into pathway enrichment</p>
+<span class="target" id="module-GSVA"></span><p>Execute bioconductors GSVA transformation of gene expression into pathway enrichment.</p>
+<p>This python package gives both a CLI interface and a python module to work with GSVA in Python Pandas DataFrames.</p>
+<p>Find the official R package here:</p>
+<p><a class="reference external" href="https://doi.org/doi:10.18129/B9.bioc.GSVA">https://doi.org/doi:10.18129/B9.bioc.GSVA</a></p>
+<p>And if you find this useful, cite the authors publication:</p>
+<p>Hänzelmann S, Castelo R and Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, pp. 7. doi: 10.1186/1471-2105-14-7, <a class="reference external" href="http://www.biomedcentral.com/1471-2105/14/7">http://www.biomedcentral.com/1471-2105/14/7</a>.</p>
 <dl class="function">
 <dt id="GSVA.gsva">
-<code class="descclassname">GSVA.</code><code class="descname">gsva</code><span class="sig-paren">(</span><em>expression_df</em>, <em>geneset_df=None</em>, <em>gmt_file=None</em>, <em>method='gsva'</em>, <em>kcdf='Gaussian'</em>, <em>abs_ranking=False</em>, <em>min_sz=1</em>, <em>max_sz=None</em>, <em>parallel_sz=0</em>, <em>parallel_type='SOCK'</em>, <em>mx_diff=True</em>, <em>tau=None</em>, <em>ssgsea_norm=True</em>, <em>verbose=False</em>, <em>tempdir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#GSVA.gsva" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">GSVA.</code><code class="descname">gsva</code><span class="sig-paren">(</span><em>expression_df</em>, <em>geneset_df=None</em>, <em>method='gsva'</em>, <em>kcdf='Gaussian'</em>, <em>abs_ranking=False</em>, <em>min_sz=1</em>, <em>max_sz=None</em>, <em>parallel_sz=0</em>, <em>parallel_type='SOCK'</em>, <em>mx_diff=True</em>, <em>tau=None</em>, <em>ssgsea_norm=True</em>, <em>verbose=False</em>, <em>tempdir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#GSVA.gsva" title="Permalink to this definition">¶</a></dt>
 <dd><p>GSVA function for use with pandas DataFrame objects</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -54,7 +59,6 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>expression_df</strong> (<em>pandas.DataFrame</em>) – REQUIRED: Expression data indexed on gene names column labels as sample ids</li>
 <li><strong>geneset_df</strong> (<em>pandas.DataFrame</em>) – REQUIRED: Genesets and their members in a dataframe</li>
-<li><strong>gmt_file</strong> (<em>string</em>) – Optionally load genesets from a gmt_file</li>
 <li><strong>method</strong> (<em>string Default: 'gsva'</em>) – Method to employ in the estimation of gene-set enrichment scores per sample. By default this is set to gsva (Hänzelmann et al, 2013) and other options 6 gsva are ssgsea (Barbie et al, 2009), zscore (Lee et al, 2008) or plage (Tomfohr et al, 2005). The latter two standardize first expression profiles into z-scores over the samples and, in the case of zscore, it combines them together as their sum divided by the square-root of the size of the gene set, while in the case of plage they are used to calculate the singular value decomposition (SVD) over the genes in the gene set and use the coefficients of the first right-singular vector as pathway activity profile.</li>
 <li><strong>kcdf</strong> (<em>string Default: 'Gaussian'</em>) – Character string denoting the kernel to use during the non-parametric estimation of the cumulative distribution function of expression levels across samples when method=”gsva”. By default, kcdf=”Gaussian” which is suitable when input expression values are continuous, such as microarray fluorescent units in logarithmic scale, RNA-seq log-CPMs, log-RPKMs or log-TPMs. When input expression values are integer counts, such as those derived from RNA-seq experiments, then this argument should be set to kcdf=”Poisson”. This argument supersedes arguments rnaseq and kernel, which are deprecated and will be removed in the next release.</li>
 <li><strong>abs_ranking</strong> (<em>bool Default: False</em>) – Flag used only when mx_diff=TRUE. When abs_ranking=FALSE [default] a modified Kuiper statistic is used to calculate enrichment scores, taking the magnitude difference between the largest positive and negative random walk deviations. When abs.ranking=TRUE the original Kuiper statistic that sums the largest positive and negative random walk deviations, is used. In this latter case, gene sets with genes enriched on either extreme (high or low) will be regarded as ’highly’ activated.</li>
@@ -72,6 +76,22 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas.DataFrame</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="GSVA.gmt_to_dataframe">
+<code class="descclassname">GSVA.</code><code class="descname">gmt_to_dataframe</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#GSVA.gmt_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to convert gmt files to a pandas dataframe</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fname</strong> (<em>string</em>) – path to gmt file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pandas.DataFrame</td>
 </tr>
 </tbody>
 </table>
