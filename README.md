@@ -41,9 +41,12 @@ $ Rscript -e 'source("http://bioconductor.org/biocLite.R");\
 
 First install GSVA Python CLI on your system as described above. For details on the `gsva(expression_df,genesets_df,...)` function parameters see https://jason-weirather.github.io/GSVA/ 
 
-### Example convert a per-sample per-gene expression matrix to a per-sample per-pathway enrichment matrix
+### Workflow example - Go from an expression-based tSNE plot to a pathway-based tSNE plot in a Jupyter notebook
 
-Consider this Jupyter notebook workflow
+Here we will convert a per-sample per-gene expression matrix to a per-sample per-pathway enrichment matrix. We will plot the values using tSNE.
+
+These code snipits and outputs are from a Jupyter notebook.
+
 
 ```python
 import pandas as pd
