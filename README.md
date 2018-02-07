@@ -1,9 +1,9 @@
-# GSVA Command-line interface and Python module
+# GSVA / ssGSEA command-line interface and Python module
 
-A command line interface for everyone.  And a python module for people content to work in python using pandas to make R's GSVA bioconductor package accessable to a wider audience.
+The GSVA (gene-set variance analysis) package from R bioconductor provides efficient computation of single-sample gene-set enrichment analysis (ssGSEA). This pakcage provides a python implmented CLI, and Python module with Pandas inputs and outputs, as well as a docker to run this R package.
 
-Repository is here: https://github.com/jason-weirather/GSVA
-Autodoc manual is here:  https://jason-weirather.github.io/GSVA/
+* Repository is here: https://github.com/jason-weirather/GSVA
+* Autodoc manual is here:  https://jason-weirather.github.io/GSVA/
 
 ##### Disclaimer
 
