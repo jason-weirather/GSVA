@@ -56,7 +56,7 @@ $ docker run -v $(pwd):$(pwd) vacation/gsva:1.0.4 \
          --output $(pwd)/example_pathways.csv
 ```
 
-4. Check output.  Thats it.  Enjoy!
+##### You're done.  Thats it.  Enjoy, check your output.
 
 ```
 $ cat example_pathways.csv | cut -f 1-3 -d ',' | head -n 6
