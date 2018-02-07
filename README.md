@@ -58,6 +58,8 @@ $ docker run -v $(pwd):$(pwd) vacation/gsva:1.0.4 \
 
 ##### You're done.  Thats it.  Enjoy, check your output.
 
+Running outside of docker on your system is just as easy (actually easier) but you need to have the required programs installed (see below). 
+
 ```
 $ cat example_pathways.csv | cut -f 1-3 -d ',' | head -n 6
 name,S-1,S-2
