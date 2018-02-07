@@ -19,10 +19,60 @@ Hänzelmann S, Castelo R and Guinney J (2013). “GSVA: gene set variation analy
 
 ## Quickstart - CLI through docker
 
-### List the options
+### Execute GSVA in docker
+
+Just be careful to let docker know all the volumes you need to mount.  Here we will do everything in our current directory.
+
+1. Start with an expression csv with gene-wise rows and sample-wise columns
 
 ```
- $ docker run vacation/gsva:1.0.4 GSVA -h
+$ cat example_expression.csv | cut -f 1-3 -d ',' | head -n 6 
+gene_name,S-1,S-2
+MT-CO1,13.852,12.328
+MT-CO2,13.405999999999999,12.383
+MT-CO3,13.234000000000002,12.109000000000002
+MT-ATP8,13.805,11.789000000000001
+MT-ATP6,13.5,11.703
+```
+
+2. Use any gene sets in **gmt** format where each row follows the convention `name <tab> description <tab> gene1 <tab> gene2 <tab> ... <tab> geneN`
+
+```
+cat c2.cp.v6.0.symbols.gmt | head -n 6 | cut -f 1-5
+KEGG_GLYCOLYSIS_GLUCONEOGENESIS	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_GLYCOLYSIS_GLUCONEOGENESIS	ACSS2	GCK	PGK2
+KEGG_CITRATE_CYCLE_TCA_CYCLE	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_CITRATE_CYCLE_TCA_CYCLE	IDH3B	DLST	PCK2
+KEGG_PENTOSE_PHOSPHATE_PATHWAY	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_PENTOSE_PHOSPHATE_PATHWAY	RPE	RPIA	PGM2
+KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS	UGT1A10	UGT1A8	RPE
+KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM	MPI	PMM2	PMM1
+KEGG_GALACTOSE_METABOLISM	http://www.broadinstitute.org/gsea/msigdb/cards/KEGG_GALACTOSE_METABOLISM	GCK	GALK1	GLB1
+```
+
+3. Run GSVA
+
+```
+$ docker run -v $(pwd):$(pwd) vacation/gsva:1.0.4 \
+    GSVA --gmt $(pwd)/c2.cp.v6.0.symbols.gmt \
+         $(pwd)/example_expression.csv \
+         --output $(pwd)/example_pathways.csv
+```
+
+4. Check output.  Thats it.  Enjoy!
+
+```
+$ cat example_pathways.csv | cut -f 1-3 -d ',' | head -n 6
+name,S-1,S-2
+BIOCARTA_41BB_PATHWAY,0.0686308398590944,0.257169127694153
+BIOCARTA_ACE2_PATHWAY,0.11082238459933501,-0.22231034473486602
+BIOCARTA_ACH_PATHWAY,0.514192767265737,0.149291024991685
+BIOCARTA_ACTINY_PATHWAY,-0.0144944990305252,0.407870971955071
+BIOCARTA_AGPCR_PATHWAY,0.6224821629523449,-0.0128449355033173
+```
+
+
+### For more advanced options you can list the options
+
+```
+$ docker run vacation/gsva:1.0.4 GSVA -h
 usage: GSVA [-h] [--tsv_in] --gmt GMT [--tsv_out] [--output OUTPUT]
             [--meta_output META_OUTPUT] [--method {gsva,ssgsea,zscore,plage}]
             [--kcdf {Gaussian,Poisson,none}] [--abs_ranking] [--min_sz MIN_SZ]
@@ -141,43 +191,6 @@ Temporary folder parameters:
   --specific_tempdir SPECIFIC_TEMPDIR
                         This temporary directory will be used, but will remain
                         after executing. (default: None)
-```
-
-### Execute GSVA in docker
-
-Just be careful to let docker know all the volumes you need to mount.  Here we will do everything in our current directory.
-
-Start with an expression csv with gene-wise rows and sample-wise columns
-
-```
-$ cat example_expression.csv | cut -f 1-3 -d ',' | head -n 6 
-gene_name,S-1,S-2
-MT-CO1,13.852,12.328
-MT-CO2,13.405999999999999,12.383
-MT-CO3,13.234000000000002,12.109000000000002
-MT-ATP8,13.805,11.789000000000001
-MT-ATP6,13.5,11.703
-```
-
-Run GSVA
-
-```
-$ docker run -v $(pwd):$(pwd) vacation/gsva:1.0.4 \
-    GSVA --gmt $(pwd)/c2.cp.v6.0.symbols.gmt \
-         $(pwd)/example_expression.csv \
-         --output $(pwd)/example_pathways.csv
-```
-
-Thats it.  Enjoy!
-
-```
-$ cat example_pathways.csv | cut -f 1-3 -d ',' | head -n 6
-name,S-1,S-2
-BIOCARTA_41BB_PATHWAY,0.0686308398590944,0.257169127694153
-BIOCARTA_ACE2_PATHWAY,0.11082238459933501,-0.22231034473486602
-BIOCARTA_ACH_PATHWAY,0.514192767265737,0.149291024991685
-BIOCARTA_ACTINY_PATHWAY,-0.0144944990305252,0.407870971955071
-BIOCARTA_AGPCR_PATHWAY,0.6224821629523449,-0.0128449355033173
 ```
 
 ## Installation
