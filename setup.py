@@ -12,7 +12,7 @@ with open(path.join(this_folder,'README.md'),encoding='utf-8') as inf:
 
 setup(
   name='GSVA',
-  version='1.0.4',
+  version='1.0.5',
   description='Python CLI and module for running the GSVA R bioconductor package with Python Pandas inputs and outputs.',
   long_description=long_description,
   url='https://github.com/jason-weirather/GSVA',

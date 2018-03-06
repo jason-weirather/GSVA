@@ -32,7 +32,7 @@ RUN add-apt-repository ppa:jonathonf/python-3.6 && \
 RUN Rscript -e 'source("http://bioconductor.org/biocLite.R");library(BiocInstaller);biocLite(pkgs=c("GSEABase","GSVA"),dep=TRUE)'
 
 RUN pip3 install --upgrade pip
-RUN pip3 install GSVA==1.0.4
+RUN pip3 install GSVA==1.0.5
 
 ENV HOME /root
 WORKDIR /root
