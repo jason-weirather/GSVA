@@ -45,7 +45,7 @@ if(tau != 'None') {
         parallel.type=parallel.type,
         mx.diff=mx.diff,
         tau=tau,
-        ssgsea.norm=ssgea.norm,
+        ssgsea.norm=ssgsea.norm,
         verbose=verbose
     )
 } else {
@@ -58,7 +58,7 @@ if(tau != 'None') {
         parallel.sz=parallel.sz,
         parallel.type=parallel.type,
         mx.diff=mx.diff,
-        ssgsea.norm=ssgea.norm,
+        ssgsea.norm=ssgsea.norm,
         verbose=verbose
     )
 }
