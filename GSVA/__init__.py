@@ -101,6 +101,8 @@ def gsva(expression_df,geneset_df=None,
     sp = Popen(cmd,stdout=PIPE,stderr=destination)
     sp.communicate()
     output = pd.read_csv(os.path.join(tempdir,"pathways.csv"),index_col=0)
+    output.index = output.index.astype(str)
+    output.columns = output.columns.astype(str)
     output.index.name = 'name'
     return output
 
@@ -112,6 +114,8 @@ def __cli():
         df = pd.read_csv(args.input,sep="\t",index_col=0)
     else:
         df = pd.read_csv(args.input,index_col=0)
+    df.index = df.index.astype(str)
+    df.columns = df.columns.astype(str)
     gmt = gmt_to_dataframe(args.gmt)
     result = gsva(df,geneset_df=gmt,
                   method=args.method,
